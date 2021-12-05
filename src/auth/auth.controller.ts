@@ -1,3 +1,7 @@
+import { RolesGuard } from './roles.guard';
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { Role } from './../shared/roles.enum';
+import { Roles } from './../shared/roles.decorator';
 import {
   Body,
   Controller,
@@ -5,6 +9,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Get,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -80,5 +85,12 @@ export class AuthController {
     return {
       access_token: await this.authService.generateAccessToken(userId),
     };
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('test')
+  getHello(@Request() req): string {
+    return req.user;
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { Role } from 'src/shared/roles.enum';
 import { User } from './schemas/users.schema';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class UsersService {
 
   async CreateUser(createUserDto: CreateUserDto): Promise<User> {
     const user = new this.userModel(createUserDto);
+    user.roles = [Role.User];
     return user.save();
   }
 

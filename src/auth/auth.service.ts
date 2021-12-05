@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   async generateAccessToken(user: User): Promise<string> {
-    const payload = { phone: user.phone, userId: user._id };
+    const payload = { phone: user.phone, userId: user._id, roles: user.roles };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('jwtSecret'),
       expiresIn: this.configService.get('jwtExpiration'),

@@ -1,3 +1,4 @@
+import { Role } from './../../shared/roles.enum';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
 import { Document } from 'mongoose';
@@ -24,11 +25,6 @@ export class User extends Document {
   biography: string;
 
   @Prop({
-    type: String,
-  })
-  role: string;
-
-  @Prop({
     type: Date,
   })
   lastLogin: Date;
@@ -38,6 +34,11 @@ export class User extends Document {
     type: String,
   })
   refreshToken: string;
+
+  @Prop({
+    type: Array,
+  })
+  roles: Role[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
