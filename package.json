@@ -23,6 +23,7 @@
   "dependencies": {
     "@nestjs/config": "^1.1.5",
     "@nestjs/jwt": "^8.0.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^9.0.1",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.2.3",
