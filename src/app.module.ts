@@ -1,6 +1,7 @@
+import { LoggerMiddleware } from './shared/middlewares/logger.middleware';
 import { OtpModule } from 'src/otp/otp.module';
 import { UsersModule } from 'src/users/users.module';
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import configuration from './config/configuration';
@@ -27,4 +28,8 @@ import { ProductsModule } from './products/products.module';
     ProductsModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('/');
+  }
+}
