@@ -8,6 +8,7 @@ import configuration from './config/configuration';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductsModule } from './products/products.module';
 import { IngredientsModule } from './ingredients/ingredients.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { IngredientsModule } from './ingredients/ingredients.module';
     OtpModule,
     ProductsModule,
     IngredientsModule,
+    CategoriesModule,
   ],
 })
 export class AppModule {

@@ -16,6 +16,9 @@ export class CreateProductDto {
   available: boolean;
 
   @Allow()
+  category: string;
+
+  @Allow()
   bread: { available: boolean; item: string }[];
 
   @Allow()

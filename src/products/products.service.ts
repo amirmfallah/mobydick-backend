@@ -12,7 +12,6 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto) {
-    console.log(createProductDto);
     return new this.productModel(createProductDto).save();
   }
 
@@ -34,5 +33,9 @@ export class ProductsService {
 
   async remove(id: string) {
     return await this.productModel.findByIdAndDelete(id);
+  }
+
+  async findProductsByCaregory(categoryId: string) {
+    return await this.productModel.find({ category: categoryId });
   }
 }

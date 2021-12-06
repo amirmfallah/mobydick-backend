@@ -28,8 +28,7 @@ export class ProductsController {
     return await this.productsService.create(createProductDto);
   }
 
-  @Roles(Role.User)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     return await this.productsService.findAll();

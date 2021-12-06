@@ -35,18 +35,9 @@ export class Product extends Document {
   available: boolean;
 
   @Prop({
-    type: [
-      {
-        available: { type: Boolean },
-        item: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: Ingredients.name,
-        },
-        _id: false,
-      },
-    ],
+    type: mongoose.Schema.Types.ObjectId,
   })
-  bread: { available: boolean; item: Ingredients }[];
+  category: string;
 
   @Prop({
     type: [
@@ -60,7 +51,7 @@ export class Product extends Document {
       },
     ],
   })
-  ingredients: { available: boolean; item: Ingredients }[];
+  bread: { available: boolean; item: string }[];
 
   @Prop({
     type: [
@@ -74,7 +65,21 @@ export class Product extends Document {
       },
     ],
   })
-  optional: { available: boolean; item: Ingredients }[];
+  ingredients: { available: boolean; item: string }[];
+
+  @Prop({
+    type: [
+      {
+        available: { type: Boolean },
+        item: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Ingredients.name,
+        },
+        _id: false,
+      },
+    ],
+  })
+  optional: { available: boolean; item: string }[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
