@@ -1,6 +1,10 @@
+import {
+  Ingredients,
+  IngredientsSchema,
+} from './../../ingredients/schemas/ingredients.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
+import { Document, Types, ObjectId } from 'mongoose';
+import * as mongoose from 'mongoose';
 @Schema({ timestamps: true })
 export class Product extends Document {
   @Prop({
@@ -31,19 +35,46 @@ export class Product extends Document {
   available: boolean;
 
   @Prop({
-    type: Array,
+    type: [
+      {
+        available: { type: Boolean },
+        item: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Ingredients.name,
+        },
+        _id: false,
+      },
+    ],
   })
-  bread: Array<string>;
+  bread: { available: boolean; item: Ingredients }[];
 
   @Prop({
-    type: Array,
+    type: [
+      {
+        available: { type: Boolean },
+        item: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Ingredients.name,
+        },
+        _id: false,
+      },
+    ],
   })
-  ingredients: Array<string>;
+  ingredients: { available: boolean; item: Ingredients }[];
 
   @Prop({
-    type: Array,
+    type: [
+      {
+        available: { type: Boolean },
+        item: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: Ingredients.name,
+        },
+        _id: false,
+      },
+    ],
   })
-  optional: Array<string>;
+  optional: { available: boolean; item: Ingredients }[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

@@ -1,3 +1,4 @@
+import { objectIdDto } from './../shared/dto/shared.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { Role } from './../shared/roles.enum';
 import {
@@ -20,31 +21,40 @@ import { RolesGuard } from 'src/auth/roles.guard';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  async create(@Body() createProductDto: CreateProductDto) {
+    return await this.productsService.create(createProductDto);
   }
 
   @Roles(Role.User)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  findAll() {
-    //return this.productsService.findAll();
-    return 'hello';
+  async findAll() {
+    return await this.productsService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.productsService.findOne(+id);
+  async findOne(@Param() params: objectIdDto) {
+    return await this.productsService.findOne(params.id);
   }
 
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(+id, updateProductDto);
+  async update(
+    @Param() params: objectIdDto,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    return await this.productsService.update(params.id, updateProductDto);
   }
 
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+  async remove(@Param() params: objectIdDto) {
+    return await this.productsService.remove(params.id);
   }
 }
