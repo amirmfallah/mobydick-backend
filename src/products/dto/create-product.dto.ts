@@ -22,11 +22,11 @@ export class CreateProductDto {
   category: string;
 
   @Allow()
-  bread: { available: boolean; item: string }[];
+  bread: { available: boolean; item: string; included: boolean }[];
 
   @Allow()
-  ingredients: { available: boolean; item: string }[];
+  ingredients: { available: boolean; item: string; included: boolean }[];
 
   @Allow()
-  optional: { available: boolean; item: string }[];
+  optional: { available: boolean; item: string; included: boolean }[];
 }

@@ -17,7 +17,7 @@ async function bootstrap() {
   );
   app.enableCors();
   await app.listen(port);
-  console.log(`Dokkaan cold start on port ${port}.`);
+  console.log(`Mobydick cold start on port ${port}.`);
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
