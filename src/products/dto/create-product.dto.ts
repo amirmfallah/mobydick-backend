@@ -12,6 +12,9 @@ export class CreateProductDto {
   @IsNotEmpty()
   price: number;
 
+  @Allow()
+  discount: number;
+
   @IsNotEmpty()
   available: boolean;
 

@@ -29,6 +29,11 @@ export class Product extends Document {
   price: number;
 
   @Prop({
+    type: Number,
+  })
+  discount: number;
+
+  @Prop({
     type: Boolean,
     default: true,
   })
