@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { Roles } from 'src/shared/roles.decorator';
 import { Role } from 'src/shared/roles.enum';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
@@ -14,7 +15,8 @@ export class BranchesController {
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
-  create(@Body() createBranchDto: CreateBranchDto) {
+  create(@Body() createBranchDto: CreateBranchDto, @Request() req: any) {
+    createBranchDto.ownerId = req.user?.userId;
     return this.branchesService.create(createBranchDto);
   }
 

@@ -8,6 +8,9 @@ export class CreateBranchDto {
   description: string;
 
   @Allow()
+  ownerId: string;
+
+  @Allow()
   thumbnail: string;
 
   @Allow()

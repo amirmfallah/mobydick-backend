@@ -2,6 +2,7 @@ import { Product } from './../../products/schemas/product.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { User } from 'src/users/schemas/users.schema';
 
 @Schema({ timestamps: true })
 export class Branch extends Document {
@@ -15,6 +16,12 @@ export class Branch extends Document {
     type: String,
   })
   description: string;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name,
+  })
+  ownerId: string;
 
   @Prop({
     type: String,
