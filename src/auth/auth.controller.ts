@@ -69,8 +69,7 @@ export class AuthController {
     };
   }
 
-  @Roles(Role.Admin)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('test')
   getHello(@Request() req): string {
     return req.user;

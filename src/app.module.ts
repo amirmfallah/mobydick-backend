@@ -11,6 +11,7 @@ import { ProductsModule } from './products/products.module';
 import { IngredientsModule } from './ingredients/ingredients.module';
 import { CategoriesModule } from './categories/categories.module';
 import { BranchesModule } from './branches/branches.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -33,8 +34,8 @@ import { BranchesModule } from './branches/branches.module';
     IngredientsModule,
     CategoriesModule,
     BranchesModule,
+    CartModule,
   ],
-  providers: [],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

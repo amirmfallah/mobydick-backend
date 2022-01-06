@@ -24,34 +24,37 @@ export class BranchesController {
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
-  create(@Body() createBranchDto: CreateBranchDto, @Request() req: any) {
+  async create(@Body() createBranchDto: CreateBranchDto, @Request() req: any) {
     createBranchDto.ownerId = req.user?.userId;
-    return this.branchesService.create(createBranchDto);
+    return await this.branchesService.create(createBranchDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.branchesService.findAll();
+  async findAll() {
+    return await this.branchesService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.branchesService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return await this.branchesService.findOne(id);
   }
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBranchDto: UpdateBranchDto) {
-    return this.branchesService.update(id, updateBranchDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateBranchDto: UpdateBranchDto,
+  ) {
+    return await this.branchesService.update(id, updateBranchDto);
   }
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.branchesService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.branchesService.remove(id);
   }
 }
