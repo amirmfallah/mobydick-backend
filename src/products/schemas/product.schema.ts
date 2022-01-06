@@ -24,9 +24,19 @@ export class Product extends Document {
   thumbnail: string;
 
   @Prop({
-    type: Number,
+    type: [
+      {
+        available: { type: Boolean },
+        optionName: { type: String },
+        price: { type: Number },
+      },
+    ],
   })
-  price: number;
+  price: {
+    available: boolean;
+    optionName: string;
+    price: number;
+  }[];
 
   @Prop({
     type: Number,

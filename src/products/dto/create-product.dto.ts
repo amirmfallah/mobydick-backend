@@ -10,7 +10,11 @@ export class CreateProductDto {
   thumbnail: string;
 
   @IsNotEmpty()
-  price: number;
+  price: {
+    available: boolean;
+    optionName: string;
+    price: number;
+  }[];
 
   @Allow()
   discount: number;

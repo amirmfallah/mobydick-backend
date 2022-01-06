@@ -1,3 +1,4 @@
+import { ServicesModule } from './shared/services/services.module';
 import { LoggerMiddleware } from './shared/middlewares/logger.middleware';
 import { OtpModule } from 'src/otp/otp.module';
 import { UsersModule } from 'src/users/users.module';
@@ -33,6 +34,7 @@ import { BranchesModule } from './branches/branches.module';
     CategoriesModule,
     BranchesModule,
   ],
+  providers: [],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,3 +1,4 @@
+import { ServicesModule } from './../shared/services/services.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -10,6 +11,7 @@ import { Otp, OtpSchema } from './schemas/otp.schema';
     ConfigModule,
     MongooseModule.forFeature([{ name: Otp.name, schema: OtpSchema }]),
     UsersModule,
+    ServicesModule,
   ],
   providers: [OtpService],
   exports: [OtpService],

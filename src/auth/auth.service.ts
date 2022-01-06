@@ -14,14 +14,6 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async validateUser(phone: string, code: string): Promise<User> {
-    const otpValidation = await this.otpService.validateOtp(phone, code);
-    if (!otpValidation) {
-      return null;
-    }
-    return await this.userService.UserExistsByPhone(phone);
-  }
-
   async login(user: User) {
     const accessToken = await this.generateAccessToken(user);
     const refreshToken = await this.generateRefreshToken(user);
