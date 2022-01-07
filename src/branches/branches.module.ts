@@ -1,6 +1,7 @@
 import { BranchSchema, Branch } from './schemas/branch.schema';
-import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
 import { BranchesService } from './branches.service';
 import { BranchesController } from './branches.controller';
 
@@ -8,9 +9,7 @@ import { BranchesController } from './branches.controller';
   controllers: [BranchesController],
   providers: [BranchesService],
   imports: [
-    MongooseModule.forFeature([
-      { name: Branch.name, schema: BranchSchema },
-    ]),
+    MongooseModule.forFeature([{ name: Branch.name, schema: BranchSchema }]),
   ],
 })
 export class BranchesModule {}
