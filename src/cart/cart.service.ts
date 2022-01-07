@@ -34,10 +34,15 @@ export class CartService {
   }
 
   async update(id: string, updateCartDto: UpdateCartDto) {
-    return this.cartModel.findByIdAndUpdate(id, updateCartDto);
+    return this.cartModel
+      .findByIdAndUpdate(id, updateCartDto, { new: true })
+      .populate('items.productId')
+      .populate('items.bread')
+      .populate('items.ingredients')
+      .populate('items.optional');
   }
 
   async remove(id: string) {
-    return this.cartModel.findByIdAndUpdate(id);
+    return this.cartModel.findByIdAndDelete(id);
   }
 }

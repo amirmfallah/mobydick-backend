@@ -1,9 +1,11 @@
+import { CartItemPopulated } from './../interfaces/cart.interface';
 import { Ingredients } from './../../ingredients/schemas/ingredients.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { Product } from 'src/products/schemas/product.schema';
 import { CartItem } from '../interfaces/cart.interface';
+import { CartStatus } from '../interfaces/cart.enum';
 
 @Schema({ timestamps: true })
 export class Cart extends Document {
@@ -16,9 +18,9 @@ export class Cart extends Document {
   @Prop({
     type: Number,
     required: true,
-    default: 0,
+    default: CartStatus.OPEN,
   })
-  status: number;
+  status: CartStatus;
 
   @Prop({
     type: [
@@ -57,7 +59,7 @@ export class Cart extends Document {
       },
     ],
   })
-  items: CartItem[];
+  items: Array<CartItem | CartItemPopulated>;
 
   @Prop({
     type: Number,
@@ -65,6 +67,13 @@ export class Cart extends Document {
     default: 0,
   })
   total: number;
+
+  @Prop({
+    type: Number,
+    required: true,
+    default: 0,
+  })
+  totalDiscount: number;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

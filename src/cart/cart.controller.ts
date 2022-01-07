@@ -1,3 +1,8 @@
+import {
+  CartDto,
+  CartItemPopulated,
+  CartPopulated,
+} from './interfaces/cart.interface';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { Role } from 'src/shared/roles.enum';
 import { Roles } from 'src/shared/roles.decorator';
@@ -18,6 +23,7 @@ import {
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
+import { calculatePrice } from './functions.helper';
 
 @Controller('api/v1/carts')
 export class CartController {
@@ -37,7 +43,8 @@ export class CartController {
     if (!cart) {
       throw new HttpException('Not found.', HttpStatus.NOT_FOUND);
     }
-    return cart;
+
+    return calculatePrice(cart);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -54,8 +61,9 @@ export class CartController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(id, updateCartDto);
+  async update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
+    const cart = await this.cartService.update(id, updateCartDto);
+    return calculatePrice(cart);
   }
 
   @Roles(Role.Admin)

@@ -17,6 +17,21 @@ export class User extends Document {
   @Prop({
     type: String,
   })
+  firstName: string;
+
+  @Prop({
+    type: String,
+  })
+  lastName: string;
+
+  @Prop({
+    type: String,
+  })
+  email: string;
+
+  @Prop({
+    type: String,
+  })
   thumbnail: string;
 
   @Prop({
