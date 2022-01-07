@@ -6,6 +6,7 @@ import { Document } from 'mongoose';
 import { Product } from 'src/products/schemas/product.schema';
 import { CartItem } from '../interfaces/cart.interface';
 import { CartStatus } from '../interfaces/cart.enum';
+import { Gift } from 'src/gifts/schemas/gifts.schema';
 
 @Schema({ timestamps: true })
 export class Cart extends Document {
@@ -14,6 +15,12 @@ export class Cart extends Document {
     type: mongoose.Schema.Types.ObjectId,
   })
   ownerId: string;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Gift.name,
+  })
+  giftId: string | Gift;
 
   @Prop({
     type: Number,

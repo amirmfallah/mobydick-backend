@@ -12,4 +12,7 @@ export class CreateCartDto {
 
   @Allow()
   total: number;
+
+  @Allow()
+  giftId: string;
 }

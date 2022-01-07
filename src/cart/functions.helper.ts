@@ -1,4 +1,8 @@
-import { CartItemPopulated, CartPopulated } from './interfaces/cart.interface';
+import {
+  CartItemPopulated,
+  CartPopulated,
+  Gift,
+} from './interfaces/cart.interface';
 import { Cart } from './schemas/cart.schema';
 
 export function calculatePrice(cart: Cart & { _id: any }) {
@@ -20,6 +24,16 @@ export function calculatePrice(cart: Cart & { _id: any }) {
     cartDto.total += basePrice;
     cartDto.totalDiscount +=
       basePrice * (elem.productId.discount / 100) * elem.count;
+  }
+
+  if (cartDto.giftId) {
+    const gift = <Gift>cartDto.giftId;
+    if (gift.amount) {
+      cartDto.totalDiscount += gift.amount;
+    } else if (gift.percent) {
+      cartDto.totalDiscount +=
+        (cartDto.total - cartDto.totalDiscount) * (gift.percent / 100);
+    }
   }
   return cartDto;
 }

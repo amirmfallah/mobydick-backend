@@ -22,7 +22,8 @@ export class CartService {
       .populate('items.productId')
       .populate('items.bread')
       .populate('items.ingredients')
-      .populate('items.optional');
+      .populate('items.optional')
+      .populate('giftId');
   }
 
   async findAllByOwner(id: string) {
@@ -39,7 +40,8 @@ export class CartService {
       .populate('items.productId')
       .populate('items.bread')
       .populate('items.ingredients')
-      .populate('items.optional');
+      .populate('items.optional')
+      .populate('giftId');
   }
 
   async remove(id: string) {

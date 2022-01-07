@@ -57,6 +57,14 @@ export interface CartDto {
   items: CartItemPopulated[];
   total: number;
   totalDiscount: number;
+  giftId: Gift;
+}
+
+export interface Gift {
+  validUntil: Date;
+  code: string;
+  amount?: number;
+  percent?: number;
 }
 
 export class CartPopulated {
@@ -66,6 +74,7 @@ export class CartPopulated {
   items: Array<CartItem | CartItemPopulated>;
   total: number;
   totalDiscount: number;
+  giftId: string | Gift;
 
   constructor(cart: Cart & { _id: any }) {
     const cartObj = cart.toObject();
@@ -75,6 +84,7 @@ export class CartPopulated {
     this.items = cartObj.items;
     this.total = cartObj.total | 0;
     this.totalDiscount = cartObj.totalDiscount | 0;
+    this.giftId = <Gift>cartObj.giftId;
   }
 
   toDto() {
@@ -85,6 +95,7 @@ export class CartPopulated {
       status: this.status,
       total: this.total,
       totalDiscount: this.totalDiscount,
+      giftId: this.giftId,
     };
   }
 }
