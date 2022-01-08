@@ -20,6 +20,7 @@ export interface IngredientItem {
   item: Ingredients;
   required: boolean;
   included: boolean;
+  forOption?: number;
 }
 
 export interface priceItem {

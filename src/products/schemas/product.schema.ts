@@ -5,6 +5,7 @@ import {
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, ObjectId } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { IngredientItem } from 'src/cart/interfaces/cart.interface';
 @Schema({ timestamps: true })
 export class Product extends Document {
   @Prop({
@@ -63,11 +64,12 @@ export class Product extends Document {
           type: mongoose.Schema.Types.ObjectId,
           ref: Ingredients.name,
         },
+        forOption: { type: Number },
         _id: false,
       },
     ],
   })
-  bread: { required: boolean; item: string; included: boolean }[];
+  bread: IngredientItem[];
 
   @Prop({
     type: [
@@ -78,11 +80,12 @@ export class Product extends Document {
           type: mongoose.Schema.Types.ObjectId,
           ref: Ingredients.name,
         },
+        forOption: { type: Number },
         _id: false,
       },
     ],
   })
-  ingredients: { required: boolean; item: string; included: boolean }[];
+  ingredients: IngredientItem[];
 
   @Prop({
     type: [
@@ -93,11 +96,12 @@ export class Product extends Document {
           type: mongoose.Schema.Types.ObjectId,
           ref: Ingredients.name,
         },
+        forOption: { type: Number },
         _id: false,
       },
     ],
   })
-  optional: { required: boolean; item: string; included: boolean }[];
+  optional: IngredientItem[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

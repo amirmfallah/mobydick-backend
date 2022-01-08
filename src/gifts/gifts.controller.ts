@@ -31,7 +31,7 @@ export class GiftsController {
     return await this.giftsService.create(createGiftDto);
   }
   @UseGuards(JwtAuthGuard)
-  @Get()
+  @Get('verify')
   async verify(@Query('code') code: string) {
     if (!code) {
       throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);

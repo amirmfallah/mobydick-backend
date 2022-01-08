@@ -1,3 +1,4 @@
+import { IngredientItem } from './../../../dist/cart/interfaces/cart.interface.d';
 import { Allow, IsNotEmpty } from 'class-validator';
 export class CreateProductDto {
   @IsNotEmpty()
@@ -26,11 +27,11 @@ export class CreateProductDto {
   category: string;
 
   @Allow()
-  bread: { required: boolean; item: string; included: boolean }[];
+  bread: IngredientItem[];
 
   @Allow()
-  ingredients: { required: boolean; item: string; included: boolean }[];
+  ingredients: IngredientItem[];
 
   @Allow()
-  optional: { required: boolean; item: string; included: boolean }[];
+  optional: IngredientItem[];
 }
