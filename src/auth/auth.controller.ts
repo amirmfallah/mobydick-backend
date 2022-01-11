@@ -16,7 +16,11 @@ import {
 import { OtpService } from 'src/otp/otp.service';
 import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import {
+  CreateUserDto,
+  CreateUserPassDto,
+  LoginUserPassDto,
+} from './dto/create-user.dto';
 import { OtpDto } from './dto/otp.dto';
 import { JwtRefreshGuard } from './jwt-refresh.guard';
 import { isPhoneNumber } from 'class-validator';
@@ -28,6 +32,23 @@ export class AuthController {
     private userService: UsersService,
     private authService: AuthService,
   ) {}
+
+  @Post('password/signup')
+  @HttpCode(HttpStatus.CREATED)
+  async createUserUserPass(@Body() createUser: CreateUserPassDto) {
+    return await this.userService.CreateUserPass(createUser);
+  }
+
+  @Post('password/login')
+  async loginUserPass(@Body() loginUser: LoginUserPassDto) {
+    let user;
+    try {
+      user = await this.userService.userPassValidate(loginUser);
+    } catch (err) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return this.authService.login(user);
+  }
 
   @Post('otp')
   @HttpCode(HttpStatus.CREATED)

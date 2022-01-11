@@ -1,18 +1,60 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import {
+  CreateUserDto,
+  CreateUserPassDto,
+  LoginUserPassDto,
+} from 'src/auth/dto/create-user.dto';
 import { Role } from 'src/shared/roles.enum';
 import { User } from './schemas/users.schema';
+import * as bcrypt from 'bcrypt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  saltRound: number;
+
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private configService: ConfigService,
+  ) {
+    this.saltRound = 10;
+  }
 
   async CreateUser(createUserDto: CreateUserDto): Promise<User> {
     const user = new this.userModel(createUserDto);
     user.roles = [Role.User];
     return user.save();
+  }
+
+  async CreateUserPass(createUserDto: CreateUserPassDto): Promise<User> {
+    const hash = await bcrypt.hash(createUserDto.password, this.saltRound);
+    const userHashed = <CreateUserPassDto>{
+      username: createUserDto.username,
+      password: hash,
+      phone: createUserDto.phone,
+    };
+    const user = new this.userModel(userHashed);
+    user.roles = [Role.User];
+    return user.save();
+  }
+
+  async userPassValidate(userDto: LoginUserPassDto): Promise<User> {
+    const user = await this.userModel.findOne({
+      username: userDto.username,
+    });
+
+    if (!user) {
+      throw new Error('NOT_FOUND');
+    }
+
+    const isMatch = await bcrypt.compare(userDto.password, user.password);
+    if (!isMatch) {
+      throw new Error('WRONG_PASS');
+    }
+
+    return user;
   }
 
   async getUserById(userId: string): Promise<User> {

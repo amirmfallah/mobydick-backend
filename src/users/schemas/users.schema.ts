@@ -21,6 +21,25 @@ export class User extends Document {
 
   @Prop({
     type: String,
+    index: {
+      unique: true,
+    },
+  })
+  username?: string;
+
+  @Prop({
+    type: String,
+  })
+  password?: string;
+
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  pending: boolean;
+
+  @Prop({
+    type: String,
   })
   lastName: string;
 
