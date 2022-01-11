@@ -12,4 +12,7 @@ export default () => ({
   s3BucketName: process.env.S3_BUCKET_NAME,
   MONGODB_URI: `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_HOST}:27017/${process.env.MONGO_DB}-${process.env.ENV}?authMechanism=DEFAULT&authSource=admin`,
   REDIS_URI: process.env.REDIS_URI,
+  SMS_API_KEY: process.env.SMS_API_KEY,
+  SMS_SECRET_KEY: process.env.SMS_ACCESS_KEY,
+  SMS_API_URL: process.env.SMS_API_URL,
 });
