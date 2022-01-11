@@ -1,5 +1,5 @@
-import { IngredientItem } from './../../../dist/cart/interfaces/cart.interface.d';
 import { Allow, IsNotEmpty } from 'class-validator';
+import { IngredientItem } from 'src/cart/interfaces/cart.interface';
 export class CreateProductDto {
   @IsNotEmpty()
   name: string;

@@ -21,4 +21,10 @@ export class CreateBranchDto {
 
   @Allow()
   sliderPictures: string[];
+
+  @Allow()
+  lng: string;
+
+  @Allow()
+  lat: string;
 }
