@@ -15,7 +15,7 @@ build:
 deploy:
 	# BUILD HERE
 	rm -rf node_modules
-	npm ci --only=production
+	npm ci
 	npm run build
 	npm prune --production
 	docker build -t amirmfallah/mobydick-app-frontend:api.0.0.${BUILDTIME} .

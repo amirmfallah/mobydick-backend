@@ -24,9 +24,10 @@ export interface IngredientItem {
 }
 
 export interface priceItem {
-  _id: string;
+  _id?: string;
   optionName: string;
   price: number;
+  index: number;
 }
 export interface Product {
   _id: string;

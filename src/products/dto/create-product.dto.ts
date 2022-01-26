@@ -1,3 +1,4 @@
+import { priceItem } from './../../cart/interfaces/cart.interface';
 import { Allow, IsNotEmpty } from 'class-validator';
 import { IngredientItem } from 'src/cart/interfaces/cart.interface';
 export class CreateProductDto {
@@ -11,11 +12,7 @@ export class CreateProductDto {
   thumbnail: string;
 
   @IsNotEmpty()
-  price: {
-    available: boolean;
-    optionName: string;
-    price: number;
-  }[];
+  price: priceItem[];
 
   @Allow()
   discount: number;

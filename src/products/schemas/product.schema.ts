@@ -30,6 +30,7 @@ export class Product extends Document {
         available: { type: Boolean },
         optionName: { type: String },
         price: { type: Number },
+        index: { type: Number },
       },
     ],
   })
