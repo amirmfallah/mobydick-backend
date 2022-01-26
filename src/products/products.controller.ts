@@ -1,4 +1,4 @@
-import { objectIdDto } from './../shared/dto/shared.dto';
+import { objectIdDto, Pagination } from './../shared/dto/shared.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { Role } from './../shared/roles.enum';
 import {
@@ -10,6 +10,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -30,8 +31,8 @@ export class ProductsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    return await this.productsService.findAll();
+  async findAll(@Query() pagination: Pagination) {
+    return await this.productsService.findAll(pagination);
   }
 
   @UseGuards(JwtAuthGuard)
