@@ -34,6 +34,7 @@ export class ProductsService {
       pages: Math.ceil(count / this.pageLimit),
       limit: this.pageLimit,
       currentPage: ++pagination.page,
+      count: count,
     };
   }
 

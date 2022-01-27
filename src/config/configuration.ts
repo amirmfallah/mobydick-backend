@@ -16,5 +16,5 @@ export default () => ({
   SMS_API_KEY: process.env.SMS_API_KEY,
   SMS_SECRET_KEY: process.env.SMS_ACCESS_KEY,
   SMS_API_URL: process.env.SMS_API_URL,
-  PAGE_COUNT: 20,
+  PAGE_COUNT: 10,
 });
