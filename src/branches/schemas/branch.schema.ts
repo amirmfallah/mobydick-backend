@@ -3,6 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { User } from 'src/users/schemas/users.schema';
+import { Address } from 'src/addresses/schemas/address.schema';
 
 @Schema({ timestamps: true })
 export class Branch extends Document {
@@ -48,6 +49,24 @@ export class Branch extends Document {
     type: Array,
   })
   sliderPictures: string[];
+
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  verified: boolean;
+
+  @Prop({
+    type: {
+      address: String,
+      lat: Number,
+      lng: Number,
+      phone: String,
+      description: String,
+      open: Boolean,
+    },
+  })
+  address: Address;
 }
 
 export const BranchSchema = SchemaFactory.createForClass(Branch);

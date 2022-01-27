@@ -23,7 +23,8 @@ export class CartService {
       .populate('items.bread')
       .populate('items.ingredients')
       .populate('items.optional')
-      .populate('giftId');
+      .populate('giftId')
+      .populate('branchId');
   }
 
   async findAllByOwner(id: string) {
@@ -41,7 +42,8 @@ export class CartService {
       .populate('items.bread')
       .populate('items.ingredients')
       .populate('items.optional')
-      .populate('giftId');
+      .populate('giftId')
+      .populate('branchId');
   }
 
   async remove(id: string) {

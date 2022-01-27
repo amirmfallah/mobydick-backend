@@ -15,4 +15,7 @@ export class CreateCartDto {
 
   @Allow()
   giftId: string;
+
+  @IsNotEmpty()
+  branchId: string;
 }

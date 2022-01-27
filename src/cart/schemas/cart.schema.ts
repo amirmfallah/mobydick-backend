@@ -1,3 +1,4 @@
+import { Branch } from './../../branches/schemas/branch.schema';
 import { CartItemPopulated } from './../interfaces/cart.interface';
 import { Ingredients } from './../../ingredients/schemas/ingredients.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -28,6 +29,13 @@ export class Cart extends Document {
     default: CartStatus.OPEN,
   })
   status: CartStatus;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Branch.name,
+    required: true,
+  })
+  branchId: string | Branch;
 
   @Prop({
     type: [

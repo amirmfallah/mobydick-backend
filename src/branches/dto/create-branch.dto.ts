@@ -1,4 +1,5 @@
 import { Allow, IsNotEmpty } from 'class-validator';
+import { Address } from 'src/shared/dto/shared.dto';
 
 export class CreateBranchDto {
   @IsNotEmpty()
@@ -23,8 +24,5 @@ export class CreateBranchDto {
   sliderPictures: string[];
 
   @Allow()
-  lng: string;
-
-  @Allow()
-  lat: string;
+  address: Address;
 }
