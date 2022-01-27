@@ -47,7 +47,7 @@ export class AuthController {
     } catch (err) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
-    return this.authService.login(user);
+    return { roles: user.roles, ...(await this.authService.login(user)) };
   }
 
   @Post('otp')
