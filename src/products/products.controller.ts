@@ -22,15 +22,14 @@ import { RolesGuard } from 'src/auth/roles.guard';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.productsService.create(createProductDto);
   }
 
-  @Roles(Role.Super)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(@Query() pagination: Pagination) {
     return await this.productsService.findAll(pagination);
@@ -42,7 +41,7 @@ export class ProductsController {
     return await this.productsService.findOne(params.id);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
   async update(
@@ -52,7 +51,7 @@ export class ProductsController {
     return await this.productsService.update(params.id, updateProductDto);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async remove(@Param() params: objectIdDto) {

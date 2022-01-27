@@ -31,6 +31,10 @@ export class CartService {
     return this.cartModel.find({ ownerId: id }).exec();
   }
 
+  async findAllByBranch(branchId: string) {
+    return this.cartModel.find({ branchId: branchId }).exec();
+  }
+
   async findOne(id: string) {
     return this.cartModel.findById(id);
   }

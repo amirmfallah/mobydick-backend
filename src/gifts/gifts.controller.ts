@@ -24,7 +24,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 export class GiftsController {
   constructor(private readonly giftsService: GiftsService) {}
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   async create(@Body() createGiftDto: CreateGiftDto) {
@@ -44,7 +44,7 @@ export class GiftsController {
     return gift;
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   async findAll() {
@@ -58,14 +58,14 @@ export class GiftsController {
     return await this.giftsService.findOne(id);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateGiftDto: UpdateGiftDto) {
     return await this.giftsService.update(id, updateGiftDto);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {

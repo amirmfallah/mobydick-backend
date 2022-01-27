@@ -47,10 +47,18 @@ export class CartController {
     return calculatePrice(cart);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Super)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   findAll() {
     return this.cartService.findAll();
+  }
+
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('branch/:id')
+  findAllByBranch(@Param('id') id: string) {
+    return this.findAllByBranch(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -66,8 +74,7 @@ export class CartController {
     return calculatePrice(cart);
   }
 
-  @Roles(Role.Admin)
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.cartService.remove(id);

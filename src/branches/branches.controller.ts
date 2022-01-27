@@ -21,7 +21,7 @@ import { UpdateBranchDto } from './dto/update-branch.dto';
 export class BranchesController {
   constructor(private readonly branchesService: BranchesService) {}
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   async create(@Body() createBranchDto: CreateBranchDto, @Request() req: any) {
@@ -29,7 +29,6 @@ export class BranchesController {
     return await this.branchesService.create(createBranchDto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
     return await this.branchesService.findAll();
@@ -41,17 +40,19 @@ export class BranchesController {
     return await this.branchesService.findOne(id);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateBranchDto: UpdateBranchDto,
   ) {
+    // TODO: Set branch pending to false after update
+    // to wait for the approval of the super admin
     return await this.branchesService.update(id, updateBranchDto);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {

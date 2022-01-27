@@ -21,7 +21,7 @@ import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   async create(@Body() createIngredientDto: CreateIngredientDto) {
@@ -40,7 +40,7 @@ export class IngredientsController {
     return await this.ingredientsService.findOne(params.id);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
   async update(
@@ -50,7 +50,7 @@ export class IngredientsController {
     return await this.ingredientsService.update(params.id, updateIngredientDto);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async remove(@Param() params: objectIdDto) {

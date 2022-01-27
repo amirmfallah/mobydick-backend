@@ -25,7 +25,7 @@ export class CategoriesController {
     private readonly productsService: ProductsService,
   ) {}
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -48,7 +48,7 @@ export class CategoriesController {
     return { ...category.toObject(), products: products };
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
   update(
@@ -58,7 +58,7 @@ export class CategoriesController {
     return this.categoriesService.update(params.id, updateCategoryDto);
   }
 
-  @Roles(Role.Admin)
+  @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   remove(@Param() params: objectIdDto) {
