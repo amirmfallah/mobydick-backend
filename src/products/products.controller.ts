@@ -29,7 +29,8 @@ export class ProductsController {
     return await this.productsService.create(createProductDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(Role.Super)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   async findAll(@Query() pagination: Pagination) {
     return await this.productsService.findAll(pagination);
