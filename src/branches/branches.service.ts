@@ -20,6 +20,10 @@ export class BranchesService {
     return this.branchModel.find({});
   }
 
+  async findAllVerified() {
+    return this.branchModel.find({ verified: true });
+  }
+
   async findOne(id: string) {
     return this.branchModel.findById(id).populate('favoriteProducts');
   }

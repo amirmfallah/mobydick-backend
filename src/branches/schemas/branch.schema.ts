@@ -21,6 +21,7 @@ export class Branch extends Document {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: User.name,
+    unique: true,
   })
   ownerId: string;
 

@@ -16,12 +16,12 @@ import {
 import { BranchesService } from './branches.service';
 import { CreateBranchDto } from './dto/create-branch.dto';
 import { UpdateBranchDto } from './dto/update-branch.dto';
-
+import * as _ from 'lodash';
 @Controller('api/v1/branches')
 export class BranchesController {
   constructor(private readonly branchesService: BranchesService) {}
 
-  @Roles(Role.Super)
+  @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   async create(@Body() createBranchDto: CreateBranchDto, @Request() req: any) {
@@ -30,8 +30,11 @@ export class BranchesController {
   }
 
   @Get()
-  async findAll() {
-    return await this.branchesService.findAll();
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async findAll(@Request() req) {
+    const roles = req.user.roles || [];
+    if (roles.includes(Role.Super)) return await this.branchesService.findAll();
+    return await this.branchesService.findAllVerified();
   }
 
   @UseGuards(JwtAuthGuard)
