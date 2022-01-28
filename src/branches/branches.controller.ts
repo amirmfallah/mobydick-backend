@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { BranchesService } from './branches.service';
 import { CreateBranchDto } from './dto/create-branch.dto';
-import { UpdateBranchDto } from './dto/update-branch.dto';
+import { SuperUpdateBranchDto, UpdateBranchDto } from './dto/update-branch.dto';
 import * as _ from 'lodash';
 @Controller('api/v1/branches')
 export class BranchesController {
@@ -43,7 +43,7 @@ export class BranchesController {
     return await this.branchesService.findOne(id);
   }
 
-  @Roles(Role.Super)
+  @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
   async update(
@@ -53,6 +53,16 @@ export class BranchesController {
     // TODO: Set branch pending to false after update
     // to wait for the approval of the super admin
     return await this.branchesService.update(id, updateBranchDto);
+  }
+
+  @Roles(Role.Super)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('super/:id')
+  async superUpdate(
+    @Param('id') id: string,
+    @Body() superUpdateBranchDto: SuperUpdateBranchDto,
+  ) {
+    return await this.branchesService.update(id, superUpdateBranchDto);
   }
 
   @Roles(Role.Super)
