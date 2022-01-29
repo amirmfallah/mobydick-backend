@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { Pagination, ProductsRes } from './../shared/dto/shared.dto';
+import { Pagination, SearchResponse } from './../shared/dto/shared.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -36,7 +36,7 @@ export class ProductsService {
 
     const items = await this.productModel.find(filter, null, query);
     const count = <number>await this.productModel.count({});
-    return <ProductsRes>{
+    return <SearchResponse>{
       items: items,
       pages: Math.ceil(count / this.pageLimit),
       limit: this.pageLimit,

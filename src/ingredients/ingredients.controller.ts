@@ -2,7 +2,7 @@ import { Roles } from './../shared/roles.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { Role } from './../shared/roles.enum';
-import { objectIdDto } from './../shared/dto/shared.dto';
+import { objectIdDto, Pagination } from './../shared/dto/shared.dto';
 import {
   Controller,
   Get,
@@ -12,6 +12,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { IngredientsService } from './ingredients.service';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
@@ -30,8 +31,11 @@ export class IngredientsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    return await this.ingredientsService.findAll();
+  async findAll(
+    @Query() pagination: Pagination,
+    @Query('search') search: string,
+  ) {
+    return await this.ingredientsService.findAll(pagination, search);
   }
 
   @UseGuards(JwtAuthGuard)

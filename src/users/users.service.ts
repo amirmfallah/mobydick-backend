@@ -36,7 +36,7 @@ export class UsersService {
       phone: createUserDto.phone,
     };
     const user = new this.userModel(userHashed);
-    user.roles = [Role.User];
+    user.roles = [Role.User, Role.Admin];
     return user.save();
   }
 

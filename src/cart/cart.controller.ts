@@ -19,11 +19,13 @@ import {
   Request,
   HttpException,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { calculatePrice } from './functions.helper';
+import { Pagination } from 'src/shared/dto/shared.dto';
 
 @Controller('api/v1/carts')
 export class CartController {
@@ -50,15 +52,15 @@ export class CartController {
   @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  findAll() {
-    return this.cartService.findAll();
+  findAll(@Query() pagination: Pagination) {
+    return this.cartService.findAll(pagination);
   }
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('branch/:id')
-  findAllByBranch(@Param('id') id: string) {
-    return this.findAllByBranch(id);
+  findAllByBranch(@Param('id') id: string, @Query() pagination: Pagination) {
+    return this.findAllByBranch(id, pagination);
   }
 
   @UseGuards(JwtAuthGuard)

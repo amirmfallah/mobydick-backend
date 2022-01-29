@@ -23,7 +23,7 @@ export interface Address {
   open: boolean;
 }
 
-export interface ProductsRes {
+export interface SearchResponse {
   items: any;
   pages: number;
   limit: number;
