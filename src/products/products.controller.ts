@@ -31,8 +31,11 @@ export class ProductsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll(@Query() pagination: Pagination) {
-    return await this.productsService.findAll(pagination);
+  async findAll(
+    @Query() pagination: Pagination,
+    @Query('search') search: string,
+  ) {
+    return await this.productsService.findAll(pagination, search);
   }
 
   @UseGuards(JwtAuthGuard)

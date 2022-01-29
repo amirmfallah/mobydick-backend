@@ -1,12 +1,12 @@
 import { ConfigService } from '@nestjs/config';
-import { Pagination } from './../shared/dto/shared.dto';
+import { Pagination, ProductsRes } from './../shared/dto/shared.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './schemas/product.schema';
 import { Model } from 'mongoose';
-
+import * as _ from 'lodash';
 @Injectable()
 export class ProductsService {
   pageLimit: number;
@@ -21,19 +21,26 @@ export class ProductsService {
     return new this.productModel(createProductDto).save();
   }
 
-  async findAll(pagination: Pagination) {
-    let query = {};
-    if (pagination.page && pagination.page > 0) {
-      pagination.page--;
+  async findAll(pagination: Pagination, search?: string) {
+    let filter = {},
+      query = {};
+
+    if (search) {
+      const regexp = new RegExp(search);
+      filter = { name: regexp };
+    }
+
+    if (pagination.page && pagination.page >= 0) {
       query = { skip: pagination.page * this.pageLimit, limit: this.pageLimit };
     }
-    const items = await this.productModel.find({}, null, query);
-    const count = await this.productModel.count({});
-    return {
+
+    const items = await this.productModel.find(filter, null, query);
+    const count = <number>await this.productModel.count({});
+    return <ProductsRes>{
       items: items,
       pages: Math.ceil(count / this.pageLimit),
       limit: this.pageLimit,
-      currentPage: ++pagination.page,
+      currentPage: _.toNumber(pagination.page),
       count: count,
     };
   }

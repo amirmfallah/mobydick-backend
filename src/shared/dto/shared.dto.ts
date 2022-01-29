@@ -1,4 +1,5 @@
 import { Allow, IsMongoId } from 'class-validator';
+import { Product } from 'src/cart/interfaces/cart.interface';
 
 export class objectIdDto {
   @IsMongoId()
@@ -20,4 +21,12 @@ export interface Address {
   phone: string;
   description: string;
   open: boolean;
+}
+
+export interface ProductsRes {
+  items: any;
+  pages: number;
+  limit: number;
+  currentPage: number;
+  count: number;
 }
