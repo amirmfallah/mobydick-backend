@@ -12,11 +12,13 @@ import {
   Param,
   Delete,
   Request,
+  Query,
 } from '@nestjs/common';
 import { BranchesService } from './branches.service';
 import { CreateBranchDto } from './dto/create-branch.dto';
 import { SuperUpdateBranchDto, UpdateBranchDto } from './dto/update-branch.dto';
 import * as _ from 'lodash';
+import { Pagination } from 'src/shared/dto/shared.dto';
 @Controller('api/v1/branches')
 export class BranchesController {
   constructor(private readonly branchesService: BranchesService) {}
@@ -31,10 +33,15 @@ export class BranchesController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async findAll(@Request() req) {
+  async findAll(
+    @Request() req,
+    @Query() pagination: Pagination,
+    @Query('search') search: string,
+  ) {
     const roles = req.user.roles || [];
-    if (roles.includes(Role.Super)) return await this.branchesService.findAll();
-    return await this.branchesService.findAllVerified();
+    if (roles.includes(Role.Super))
+      return await this.branchesService.findAll(pagination, search);
+    return await this.branchesService.findAllVerified(pagination, search);
   }
 
   @Get('owner')
