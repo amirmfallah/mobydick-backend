@@ -43,11 +43,13 @@ export class Branch extends Document {
         ref: Product.name,
       },
     ],
+    default: [],
   })
   favoriteProducts: string[];
 
   @Prop({
     type: Array,
+    default: [],
   })
   sliderPictures: string[];
 

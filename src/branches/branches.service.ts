@@ -24,8 +24,18 @@ export class BranchesService {
     return this.branchModel.find({ verified: true });
   }
 
+  async findByOwner(ownerId: string) {
+    return this.branchModel
+      .findOne({ ownerId: ownerId })
+      .populate('favoriteProducts')
+      .populate('ownerId');
+  }
+
   async findOne(id: string) {
-    return this.branchModel.findById(id).populate('favoriteProducts');
+    return this.branchModel
+      .findById(id)
+      .populate('favoriteProducts')
+      .populate('ownerId');
   }
 
   async update(id: string, updateBranchDto: UpdateBranchDto) {

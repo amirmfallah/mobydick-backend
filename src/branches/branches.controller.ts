@@ -37,6 +37,14 @@ export class BranchesController {
     return await this.branchesService.findAllVerified();
   }
 
+  @Get('owner')
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async findBranchByOwner(@Request() req) {
+    const ownerId = req.user?.userId;
+    return await this.branchesService.findByOwner(ownerId);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
