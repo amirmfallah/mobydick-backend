@@ -3,7 +3,7 @@ import { RolesGuard } from 'src/auth/roles.guard';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { Role } from './../shared/roles.enum';
 import { Roles } from './../shared/roles.decorator';
-import { objectIdDto } from './../shared/dto/shared.dto';
+import { objectIdDto, Pagination } from './../shared/dto/shared.dto';
 import {
   Controller,
   Get,
@@ -13,6 +13,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -34,8 +35,8 @@ export class CategoriesController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.categoriesService.findAll();
+  findAll(@Query() pagination: Pagination, @Query('search') search: string) {
+    return this.categoriesService.findAll(pagination, search);
   }
 
   @UseGuards(JwtAuthGuard)
