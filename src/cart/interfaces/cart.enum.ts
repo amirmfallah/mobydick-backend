@@ -1,7 +1,7 @@
 export enum CartStatus {
-  OPEN,
-  REGISTERED,
-  PREPARING,
-  SENT,
-  DELIVERED,
+  OPEN = 'OPEN',
+  REGISTERED = 'REGISTERED',
+  PREPARING = 'PREPARING',
+  SENT = 'SENT',
+  DELIVERED = 'DELIVERED',
 }

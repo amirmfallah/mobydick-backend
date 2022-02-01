@@ -4,6 +4,7 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { User } from 'src/users/schemas/users.schema';
 import { Address } from 'src/addresses/schemas/address.schema';
+import { AddressDto } from 'src/shared/dto/shared.dto';
 
 @Schema({ timestamps: true })
 export class Branch extends Document {
@@ -69,7 +70,7 @@ export class Branch extends Document {
       open: Boolean,
     },
   })
-  address: Address;
+  address: AddressDto;
 }
 
 export const BranchSchema = SchemaFactory.createForClass(Branch);

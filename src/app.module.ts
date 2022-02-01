@@ -14,7 +14,7 @@ import { BranchesModule } from './branches/branches.module';
 import { CartModule } from './cart/cart.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { GiftsModule } from './gifts/gifts.module';
-import { TransactionsModule } from './transactions/transactions.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -40,7 +40,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     CartModule,
     AddressesModule,
     GiftsModule,
-    TransactionsModule,
+    OrdersModule,
   ],
 })
 export class AppModule {

@@ -1,7 +1,7 @@
 import {
   Ingredients,
   IngredientsSchema,
-} from './../../ingredients/schemas/ingredients.schema';
+} from '../../ingredients/schemas/ingredients.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, ObjectId } from 'mongoose';
 import * as mongoose from 'mongoose';

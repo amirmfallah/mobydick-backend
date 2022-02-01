@@ -1,13 +1,11 @@
-import { Branch } from './../../branches/schemas/branch.schema';
 import { CartItemPopulated } from './../interfaces/cart.interface';
-import { Ingredients } from './../../ingredients/schemas/ingredients.schema';
+import { Ingredients } from '../../ingredients/schemas/ingredients.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { Product } from 'src/products/schemas/product.schema';
 import { CartItem } from '../interfaces/cart.interface';
 import { CartStatus } from '../interfaces/cart.enum';
-import { Gift } from 'src/gifts/schemas/gifts.schema';
 
 @Schema({ timestamps: true })
 export class Cart extends Document {
@@ -18,24 +16,11 @@ export class Cart extends Document {
   ownerId: string;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: Gift.name,
-  })
-  giftId: string | Gift;
-
-  @Prop({
-    type: Number,
+    type: String,
     required: true,
     default: CartStatus.OPEN,
   })
   status: CartStatus;
-
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: Branch.name,
-    required: true,
-  })
-  branchId: string | Branch;
 
   @Prop({
     type: [
@@ -75,20 +60,6 @@ export class Cart extends Document {
     ],
   })
   items: Array<CartItem | CartItemPopulated>;
-
-  @Prop({
-    type: Number,
-    required: true,
-    default: 0,
-  })
-  total: number;
-
-  @Prop({
-    type: Number,
-    required: true,
-    default: 0,
-  })
-  totalDiscount: number;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

@@ -24,8 +24,8 @@ import {
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
-import { calculatePrice } from './functions.helper';
 import { Pagination } from 'src/shared/dto/shared.dto';
+import { calculateProductPrice } from './functions.helper';
 
 @Controller('api/v1/carts')
 export class CartController {
@@ -46,7 +46,7 @@ export class CartController {
       throw new HttpException('Not found.', HttpStatus.NOT_FOUND);
     }
 
-    return calculatePrice(cart);
+    return calculateProductPrice(cart);
   }
 
   @Roles(Role.Super)
@@ -60,7 +60,7 @@ export class CartController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('branch/:id')
   findAllByBranch(@Param('id') id: string, @Query() pagination: Pagination) {
-    return this.findAllByBranch(id, pagination);
+    return this.cartService.findAllByBranch(id, pagination);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -73,7 +73,7 @@ export class CartController {
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
     const cart = await this.cartService.update(id, updateCartDto);
-    return calculatePrice(cart);
+    return calculateProductPrice(cart);
   }
 
   @UseGuards(JwtAuthGuard)

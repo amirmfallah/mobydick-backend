@@ -49,7 +49,7 @@ export interface CartItemPopulated {
   ingredients: Array<Ingredients>;
   option: string;
   count: number;
-  calculatedPrice?: Number;
+  calculatedPrice?: number;
 }
 
 export interface CartDto {
@@ -72,21 +72,13 @@ export interface Gift {
 export class CartPopulated {
   _id: string;
   ownerId: string;
-  status: number;
   items: Array<CartItem | CartItemPopulated>;
-  total: number;
-  totalDiscount: number;
-  giftId: string | Gift;
 
   constructor(cart: Cart & { _id: any }) {
     const cartObj = cart.toObject();
     this._id = cartObj._id.toString();
     this.ownerId = cartObj.ownerId.toString();
-    this.status = cartObj.status;
     this.items = cartObj.items;
-    this.total = cartObj.total | 0;
-    this.totalDiscount = cartObj.totalDiscount | 0;
-    this.giftId = <Gift>cartObj.giftId;
   }
 
   toDto() {
@@ -94,10 +86,6 @@ export class CartPopulated {
       _id: this._id,
       items: this.items,
       ownerId: this.ownerId,
-      status: this.status,
-      total: this.total,
-      totalDiscount: this.totalDiscount,
-      giftId: this.giftId,
     };
   }
 }

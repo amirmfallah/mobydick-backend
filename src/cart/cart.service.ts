@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 import { Pagination, SearchResponse } from 'src/shared/dto/shared.dto';
 import * as _ from 'lodash';
 import { ConfigService } from '@nestjs/config';
+import { CartStatus } from './interfaces/cart.enum';
 @Injectable()
 export class CartService {
   pageLimit: number;
@@ -41,13 +42,11 @@ export class CartService {
 
   async findOneOpenCart(owner: string) {
     return this.cartModel
-      .findOne({ ownerId: owner, status: 0 })
+      .findOne({ ownerId: owner, status: CartStatus.OPEN })
       .populate('items.productId')
       .populate('items.bread')
       .populate('items.ingredients')
-      .populate('items.optional')
-      .populate('giftId')
-      .populate('branchId');
+      .populate('items.optional');
   }
 
   async findAllByOwner(id: string) {
@@ -82,9 +81,7 @@ export class CartService {
       .populate('items.productId')
       .populate('items.bread')
       .populate('items.ingredients')
-      .populate('items.optional')
-      .populate('giftId')
-      .populate('branchId');
+      .populate('items.optional');
   }
 
   async remove(id: string) {

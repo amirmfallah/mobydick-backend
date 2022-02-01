@@ -1,5 +1,4 @@
 import { Allow, IsMongoId } from 'class-validator';
-import { Product } from 'src/cart/interfaces/cart.interface';
 
 export class objectIdDto {
   @IsMongoId()
@@ -14,13 +13,21 @@ export class Pagination {
   limit: number;
 }
 
-export interface Address {
+export interface AddressDto {
   address: string;
   lat: number;
   lng: number;
   phone: string;
   description: string;
   open: boolean;
+}
+
+export interface ShippingAddress {
+  address: string;
+  lat: number;
+  lng: number;
+  phone: string;
+  description: string;
 }
 
 export interface SearchResponse {
@@ -30,3 +37,15 @@ export interface SearchResponse {
   currentPage: number;
   count: number;
 }
+
+export interface UserDto {
+  phone: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  thumbnail: string;
+}
+
+// export interface BranchDto {
+
+// }

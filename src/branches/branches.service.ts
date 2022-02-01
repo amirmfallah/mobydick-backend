@@ -36,7 +36,9 @@ export class BranchesService {
       query = { skip: pagination.page * this.pageLimit, limit: this.pageLimit };
     }
 
-    const items = await this.branchModel.find(filter, null, query);
+    const items = await this.branchModel
+      .find(filter, null, query)
+      .populate('ownerId');
     const count = <number>await this.branchModel.count(filter);
     return <SearchResponse>{
       items: items,
@@ -60,7 +62,9 @@ export class BranchesService {
       query = { skip: pagination.page * this.pageLimit, limit: this.pageLimit };
     }
 
-    const items = await this.branchModel.find(filter, null, query);
+    const items = await this.branchModel
+      .find(filter, null, query)
+      .populate('ownerId');
     const count = <number>await this.branchModel.count(filter);
     return <SearchResponse>{
       items: items,

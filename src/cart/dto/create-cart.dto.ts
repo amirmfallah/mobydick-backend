@@ -1,21 +1,12 @@
+import { CartStatus } from './../interfaces/cart.enum';
 import { Allow, IsMongoId, isNotEmpty, IsNotEmpty } from 'class-validator';
 import { CartItem } from './../interfaces/cart.interface';
 export class CreateCartDto {
   @Allow()
   ownerId: string;
 
-  @Allow()
-  status: number;
+  status: CartStatus;
 
   @IsNotEmpty()
   items: CartItem[];
-
-  @Allow()
-  total: number;
-
-  @Allow()
-  giftId: string;
-
-  @IsNotEmpty()
-  branchId: string;
 }
