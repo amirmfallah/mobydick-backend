@@ -12,15 +12,9 @@ export class Cart extends Document {
   @Prop({
     required: true,
     type: mongoose.Schema.Types.ObjectId,
+    unique: true,
   })
   ownerId: string;
-
-  @Prop({
-    type: String,
-    required: true,
-    default: CartStatus.OPEN,
-  })
-  status: CartStatus;
 
   @Prop({
     type: [

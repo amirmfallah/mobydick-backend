@@ -42,7 +42,7 @@ export class CartService {
 
   async findOneOpenCart(owner: string) {
     return this.cartModel
-      .findOne({ ownerId: owner, status: CartStatus.OPEN })
+      .findOne({ ownerId: owner })
       .populate('items.productId')
       .populate('items.bread')
       .populate('items.ingredients')
@@ -72,7 +72,12 @@ export class CartService {
   }
 
   async findOne(id: string) {
-    return this.cartModel.findById(id);
+    return this.cartModel
+      .findById(id)
+      .populate('items.productId')
+      .populate('items.bread')
+      .populate('items.ingredients')
+      .populate('items.optional');
   }
 
   async update(id: string, updateCartDto: UpdateCartDto) {

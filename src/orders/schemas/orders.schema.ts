@@ -1,9 +1,12 @@
+import { CartStatus } from './../../cart/interfaces/cart.enum';
+import { AddressDto } from 'src/shared/dto/shared.dto';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { Gift } from 'src/gifts/schemas/gifts.schema';
 import { Branch } from 'src/branches/schemas/branch.schema';
 import { Cart } from 'src/cart/schemas/cart.schema';
+import { Address } from 'src/addresses/schemas/address.schema';
 
 @Schema({ timestamps: true })
 export class Order extends Document {
@@ -34,17 +37,19 @@ export class Order extends Document {
   giftId: string | Gift;
 
   @Prop({
-    type: Number,
-    required: true,
-    default: 0,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Address.name,
   })
-  total: number;
+  addressId: string | AddressDto;
 
   @Prop({
-    type: Number,
+    type: String,
     required: true,
-    default: 0,
+    default: CartStatus.OPEN,
   })
+  status: CartStatus;
+
+  total: number;
   totalDiscount: number;
 }
 

@@ -5,8 +5,6 @@ export class CreateCartDto {
   @Allow()
   ownerId: string;
 
-  status: CartStatus;
-
   @IsNotEmpty()
   items: CartItem[];
 }

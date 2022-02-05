@@ -18,4 +18,7 @@ export default () => ({
   SMS_API_URL: process.env.SMS_API_URL,
   PAGE_COUNT: 10,
   ZIBAL_MERCHENT: process.env.ZIBAL_MERCHENT,
+  NEXTPAY_MERCHENT: process.env.NEXTPAY_MERCHENT,
+  NEXTPAY_API: process.env.NEXTPAY_API,
+  HOST: process.env.HOST,
 });

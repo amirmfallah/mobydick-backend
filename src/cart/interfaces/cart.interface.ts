@@ -55,11 +55,7 @@ export interface CartItemPopulated {
 export interface CartDto {
   _id: string;
   ownerId: string;
-  status: number;
   items: CartItemPopulated[];
-  total: number;
-  totalDiscount: number;
-  giftId: Gift;
 }
 
 export interface Gift {

@@ -10,5 +10,6 @@ import { Gift, GiftSchema } from './schemas/gifts.schema';
   imports: [
     MongooseModule.forFeature([{ name: Gift.name, schema: GiftSchema }]),
   ],
+  exports: [GiftsService],
 })
 export class GiftsModule {}
