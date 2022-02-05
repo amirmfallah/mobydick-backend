@@ -51,6 +51,16 @@ export class Order extends Document {
 
   total: number;
   totalDiscount: number;
+
+  @Prop({
+    type: Object,
+  })
+  payment: any;
+
+  @Prop({
+    type: String,
+  })
+  trans_id: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

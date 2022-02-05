@@ -4,7 +4,11 @@ import { ConfigService } from '@nestjs/config';
 import { AbstractPayment } from '../AbstractPayment';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-
+interface CallbackQuery {
+  trans_id: string;
+  order_id: string;
+  amount: number;
+}
 @Injectable()
 export class NextPayGateway extends AbstractPayment {
   constructor(private configService: ConfigService, private http: HttpService) {
@@ -22,11 +26,11 @@ export class NextPayGateway extends AbstractPayment {
     );
   }
 
-  verifyPayment(info: any): Promise<any> {
+  verifyPayment(info: CallbackQuery): Promise<any> {
     return lastValueFrom(
       this.http.post(`${this.configService.get('NEXTPAY_API')}/verify`, {
         api_key: this.merchentId,
-        trans_id: info.transId,
+        trans_id: info.trans_id,
         amount: info.amount,
       }),
     );

@@ -1,3 +1,4 @@
+import { CartStatus } from './../cart/interfaces/cart.enum';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -13,6 +14,7 @@ import {
   Request,
   HttpException,
   HttpStatus,
+  Res,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -29,13 +31,17 @@ import { NextPayGateway } from 'src/shared/gateways/nextpay.gateway';
 export class OrdersController {
   gateway: AbstractPayment;
   callbackUrl;
+  hostUrl;
+
   constructor(
     private readonly ordersService: OrdersService,
     private nestpayGateway: NextPayGateway,
     private configService: ConfigService,
   ) {
     this.gateway = nestpayGateway;
-    this.callbackUrl = this.configService.get('HOST');
+    this.callbackUrl =
+      this.configService.get('API_HOST') + '/api/v1/orders/callback';
+    this.hostUrl = this.configService.get('HOST') + '/history';
   }
 
   @UseGuards(JwtAuthGuard)
@@ -58,15 +64,37 @@ export class OrdersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('checkout')
-  async checkout() {
+  @Get('checkout/:id')
+  async checkout(@Param('id') id: string) {
+    const order = await this.ordersService.findOne(id);
+    if (!order) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
     const paymentInfo = await this.gateway.getPayment({
-      orderId: 'f7c07568-c6d1-4bee-87b1-4a9e5ed2e4c1',
-      amount: 123000,
+      orderId: order._id,
+      amount: order.total - order.totalDiscount,
       callbackUrl: this.callbackUrl,
     });
-    return this.gateway.getGatewayUrl(paymentInfo.data);
+    return { url: this.gateway.getGatewayUrl(paymentInfo.data) };
     //return this.ordersService.findAll(pagination);
+  }
+
+  @Get('callback')
+  async verifyTransaction(@Query() verifyQuery, @Res() res) {
+    const result = (await this.gateway.verifyPayment(verifyQuery)).data;
+    let status = CartStatus.OPEN;
+
+    if (result.data === 0) {
+      status = CartStatus.REGISTERED;
+    }
+    await this.ordersService.update(result.order_id, {
+      payment: result,
+      status: status,
+      trans_id: verifyQuery.trans_id,
+    });
+
+    console.log(result);
+    return res.redirect(this.hostUrl);
   }
 
   @Roles(Role.Super)
@@ -100,10 +128,5 @@ export class OrdersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ordersService.remove(id);
-  }
-
-  @Get('callback')
-  verifyTransaction(@Query() verifyQuery) {
-    return '';
   }
 }

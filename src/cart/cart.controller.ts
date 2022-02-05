@@ -35,7 +35,8 @@ export class CartController {
   @Post()
   async create(@Body() createCartDto: CreateCartDto, @Request() req) {
     createCartDto.ownerId = req.user.userId;
-    return await this.cartService.create(createCartDto);
+    const cart = await this.cartService.create(createCartDto);
+    return calculateProductPrice(cart);
   }
 
   @UseGuards(JwtAuthGuard)

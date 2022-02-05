@@ -27,6 +27,10 @@ export class OrdersService {
   async create(createOrderDto: CreateOrderDto) {
     let giftObj;
     const cartObj = await this.cartService.findOne(createOrderDto.cartId);
+    if (!cartObj) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+
     if (createOrderDto.giftId) {
       giftObj = await this.giftService.findOne(createOrderDto.giftId);
     }
@@ -35,9 +39,10 @@ export class OrdersService {
     createOrderDto.totalDiscount = priceObj.totalDiscount;
 
     const order = await new this.OrdersModel(createOrderDto).save();
-    order.total = priceObj.total;
-    order.totalDiscount = priceObj.totalDiscount;
-    return order;
+    const orderObj = order.toObject();
+    orderObj.total = priceObj.total;
+    orderObj.totalDiscount = priceObj.totalDiscount;
+    return orderObj;
   }
 
   async findAll(pagination: Pagination) {
@@ -82,12 +87,19 @@ export class OrdersService {
     };
   }
 
-  findOne(id: string) {
-    return this.OrdersModel.findById(id)
+  async findOne(id: string) {
+    const order = await this.OrdersModel.findById(id)
       .populate('giftId')
       .populate('branchId')
       .populate('cartId')
       .populate('addressId');
+
+    const orderObj = order.toObject();
+    const cartObj = await this.cartService.findOne(<string>orderObj.cartId);
+    const priceObj = calculatePrice(cartObj, <Gift>orderObj.giftId);
+    _.set(orderObj, 'total', priceObj.total);
+    _.set(orderObj, 'totalDiscount', priceObj.totalDiscount);
+    return orderObj;
   }
 
   async findOpenByUser(userId: string, cartId?: string) {

@@ -20,4 +20,8 @@ export class CreateOrderDto {
   addressId: string;
 
   status: CartStatus;
+
+  payment: any;
+
+  trans_id: string;
 }

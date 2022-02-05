@@ -19,7 +19,14 @@ export class CartService {
   }
 
   async create(createCartDto: CreateCartDto) {
-    return new this.cartModel(createCartDto).save();
+    const cart = await new this.cartModel(createCartDto).save();
+
+    return await cart.populate([
+      'items.productId',
+      'items.bread',
+      'items.ingredients',
+      'items.optional',
+    ]);
   }
 
   async findAll(pagination: Pagination) {
