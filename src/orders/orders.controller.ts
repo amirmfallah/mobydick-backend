@@ -1,3 +1,5 @@
+import { Cart } from 'src/cart/schemas/cart.schema';
+import { CartService } from './../cart/cart.service';
 import { CartStatus } from './../cart/interfaces/cart.enum';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
@@ -37,6 +39,7 @@ export class OrdersController {
     private readonly ordersService: OrdersService,
     private nestpayGateway: NextPayGateway,
     private configService: ConfigService,
+    private cartService: CartService,
   ) {
     this.gateway = nestpayGateway;
     this.callbackUrl =
@@ -70,6 +73,8 @@ export class OrdersController {
     if (!order) {
       throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
     }
+    await this.cartService.update((<Cart>order.cartId)._id, { open: false });
+
     const paymentInfo = await this.gateway.getPayment({
       orderId: order._id,
       amount: order.total - order.totalDiscount,
@@ -86,6 +91,8 @@ export class OrdersController {
 
     if (result.data === 0) {
       status = CartStatus.REGISTERED;
+    } else {
+      status = CartStatus.CANCELED;
     }
     await this.ordersService.update(result.order_id, {
       payment: result,
@@ -105,6 +112,13 @@ export class OrdersController {
   }
 
   @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('user')
+  findAllByUser(@Request() req) {
+    const userId = req.user.userId;
+    return this.ordersService.findAllByUser(userId);
+  }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('branch/:id')
   findAllByBranch(@Query() pagination: Pagination, @Param('id') id: string) {

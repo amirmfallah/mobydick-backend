@@ -49,7 +49,7 @@ export class CartService {
 
   async findOneOpenCart(owner: string) {
     return this.cartModel
-      .findOne({ ownerId: owner })
+      .findOne({ ownerId: owner, open: true })
       .populate('items.productId')
       .populate('items.bread')
       .populate('items.ingredients')

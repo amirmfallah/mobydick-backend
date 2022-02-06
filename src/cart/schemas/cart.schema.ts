@@ -12,7 +12,6 @@ export class Cart extends Document {
   @Prop({
     required: true,
     type: mongoose.Schema.Types.ObjectId,
-    unique: true,
   })
   ownerId: string;
 
@@ -54,6 +53,13 @@ export class Cart extends Document {
     ],
   })
   items: Array<CartItem | CartItemPopulated>;
+
+  @Prop({
+    required: true,
+    type: Boolean,
+    default: true,
+  })
+  open: boolean;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

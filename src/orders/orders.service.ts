@@ -70,6 +70,19 @@ export class OrdersService {
     };
   }
 
+  async findAllByUser(userId: string) {
+    const order = this.OrdersModel.find({ ownerId: userId }).populate([
+      'giftId',
+      'branchId',
+      'ownerId',
+      'addressId',
+    ]);
+    return await order.populate({
+      path: 'cartId',
+      populate: { path: 'items.productId', select: ['thumbnail'] },
+    });
+  }
+
   async findAllByBranch(branchId: string, pagination: Pagination) {
     const filter = { branchId: branchId },
       query = {};

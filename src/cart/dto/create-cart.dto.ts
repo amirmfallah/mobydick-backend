@@ -7,4 +7,6 @@ export class CreateCartDto {
 
   @IsNotEmpty()
   items: CartItem[];
+
+  open: boolean;
 }
