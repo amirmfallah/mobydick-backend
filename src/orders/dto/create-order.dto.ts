@@ -1,6 +1,7 @@
 import { CartStatus } from './../../cart/interfaces/cart.enum';
 import { IsNotEmpty, Allow } from 'class-validator';
 export class CreateOrderDto {
+  orderId: string;
   ownerId: string;
 
   @IsNotEmpty()
@@ -19,6 +20,7 @@ export class CreateOrderDto {
   @IsNotEmpty()
   addressId: string;
 
+  @Allow()
   status: CartStatus;
 
   payment: any;

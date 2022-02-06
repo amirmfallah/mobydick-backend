@@ -37,7 +37,7 @@ export class OrdersService {
     const priceObj = calculatePrice(cartObj, giftObj);
     createOrderDto.total = priceObj.total;
     createOrderDto.totalDiscount = priceObj.totalDiscount;
-
+    createOrderDto.orderId = 'MD' + Math.floor(Date.now() / 1000).toString();
     const order = await new this.OrdersModel(createOrderDto).save();
     const orderObj = order.toObject();
     orderObj.total = priceObj.total;
@@ -46,16 +46,21 @@ export class OrdersService {
   }
 
   async findAll(pagination: Pagination) {
-    let query = {};
+    const filter = {},
+      query = {};
 
     if (pagination.page && pagination.page >= 0) {
-      query = { skip: pagination.page * this.pageLimit, limit: this.pageLimit };
+      query['skip'] = pagination.page * this.pageLimit;
+      query['limit'] = this.pageLimit;
     }
 
-    const items = await this.OrdersModel.find({}, null, query)
-      .populate('giftId')
-      .populate('branchId');
-    const count = <number>await this.OrdersModel.count({});
+    const items = await this.OrdersModel.find(filter, null, query).populate([
+      'giftId',
+      'branchId',
+      'ownerId',
+      'addressId',
+    ]);
+    const count = <number>await this.OrdersModel.count(filter);
     return <SearchResponse>{
       items: items,
       pages: Math.ceil(count / this.pageLimit),
@@ -74,9 +79,12 @@ export class OrdersService {
       query['limit'] = this.pageLimit;
     }
 
-    const items = await this.OrdersModel.find(filter, null, query)
-      .populate('giftId')
-      .populate('branchId');
+    const items = await this.OrdersModel.find(filter, null, query).populate([
+      'giftId',
+      'branchId',
+      'ownerId',
+      'addressId',
+    ]);
     const count = <number>await this.OrdersModel.count(filter);
     return <SearchResponse>{
       items: items,
@@ -92,7 +100,8 @@ export class OrdersService {
       .populate('giftId')
       .populate('branchId')
       .populate('cartId')
-      .populate('addressId');
+      .populate('addressId')
+      .populate('ownerId');
 
     const orderObj = order.toObject();
     const cartObj = await this.cartService.findOne(<string>orderObj.cartId);

@@ -7,11 +7,20 @@ import { Gift } from 'src/gifts/schemas/gifts.schema';
 import { Branch } from 'src/branches/schemas/branch.schema';
 import { Cart } from 'src/cart/schemas/cart.schema';
 import { Address } from 'src/addresses/schemas/address.schema';
+import { User } from 'src/users/schemas/users.schema';
 
 @Schema({ timestamps: true })
 export class Order extends Document {
   @Prop({
     required: true,
+    type: String,
+    unique: true,
+  })
+  orderId: string;
+
+  @Prop({
+    required: true,
+    ref: User.name,
     type: mongoose.Schema.Types.ObjectId,
   })
   ownerId: string;

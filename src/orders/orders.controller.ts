@@ -106,7 +106,7 @@ export class OrdersController {
 
   @Roles(Role.Admin)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get(':id')
+  @Get('branch/:id')
   findAllByBranch(@Query() pagination: Pagination, @Param('id') id: string) {
     return this.ordersService.findAllByBranch(id, pagination);
   }
