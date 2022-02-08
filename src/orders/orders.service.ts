@@ -64,8 +64,10 @@ export class OrdersService {
         const user = await this.usersService.searchUserByPhone(searchObj.phone);
         if (user) {
           searchObj.ownerId = user._id;
+        } else {
+          searchObj.ownerId = '4edd40c86762e0fb12000003';
         }
-        delete searchObj.phone;
+        filter['ownerId'] = searchObj.ownerId;
       }
     }
 
@@ -124,8 +126,10 @@ export class OrdersService {
         const user = await this.usersService.searchUserByPhone(searchObj.phone);
         if (user) {
           searchObj.ownerId = user._id;
+        } else {
+          searchObj.ownerId = '4edd40c86762e0fb12000003';
         }
-        delete searchObj.phone;
+        filter['ownerId'] = searchObj.ownerId;
       }
     }
     filter['branchId'] = branchId;
