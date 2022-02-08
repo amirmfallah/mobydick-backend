@@ -5,14 +5,14 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateOrderDto } from './dto/create-order.dto';
+import { CreateOrderDto, Filter } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order } from './schemas/orders.schema';
 import { Pagination, SearchResponse } from 'src/shared/dto/shared.dto';
 import * as _ from 'lodash';
 import { CartStatus } from 'src/cart/interfaces/cart.enum';
 import { calculatePrice } from 'src/cart/functions.helper';
-
+import { UsersService } from 'src/users/users.service';
 @Injectable()
 export class OrdersService {
   pageLimit: number;
@@ -21,6 +21,7 @@ export class OrdersService {
     private configService: ConfigService,
     private cartService: CartService,
     private giftService: GiftsService,
+    private usersService: UsersService,
   ) {
     this.pageLimit = this.configService.get('PAGE_COUNT');
   }
@@ -45,9 +46,28 @@ export class OrdersService {
     return orderObj;
   }
 
-  async findAll(pagination: Pagination) {
-    const filter = {},
-      query = {};
+  async findAll(pagination: Pagination, search?: string) {
+    let filter = {};
+    const query = {};
+
+    console.log(search);
+    if (search) {
+      let searchObj: Filter;
+      try {
+        searchObj = JSON.parse(search);
+      } catch (err) {
+        throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      }
+      filter = _.mapValues(searchObj, (value) => new RegExp(value));
+
+      if (searchObj.phone) {
+        const user = await this.usersService.searchUserByPhone(searchObj.phone);
+        if (user) {
+          searchObj.ownerId = user._id;
+        }
+        delete searchObj.phone;
+      }
+    }
 
     if (pagination.page && pagination.page >= 0) {
       query['skip'] = pagination.page * this.pageLimit;
@@ -83,10 +103,32 @@ export class OrdersService {
     });
   }
 
-  async findAllByBranch(branchId: string, pagination: Pagination) {
-    const filter = { branchId: branchId },
-      query = {};
+  async findAllByBranch(
+    branchId: string,
+    pagination: Pagination,
+    search?: string,
+  ) {
+    let filter = {};
+    const query = {};
 
+    if (search) {
+      let searchObj: Filter;
+      try {
+        searchObj = JSON.parse(search);
+      } catch (err) {
+        throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      }
+      filter = _.mapValues(searchObj, (value) => new RegExp(value));
+
+      if (searchObj.phone) {
+        const user = await this.usersService.searchUserByPhone(searchObj.phone);
+        if (user) {
+          searchObj.ownerId = user._id;
+        }
+        delete searchObj.phone;
+      }
+    }
+    filter['branchId'] = branchId;
     if (pagination.page && pagination.page >= 0) {
       query['skip'] = pagination.page * this.pageLimit;
       query['limit'] = this.pageLimit;

@@ -28,6 +28,11 @@ export class UsersService {
     return user.save();
   }
 
+  async searchUserByPhone(phone: string) {
+    const exp = new RegExp(phone);
+    return this.userModel.findOne({ phone: exp });
+  }
+
   async CreateUserPass(createUserDto: CreateUserPassDto): Promise<User> {
     const hash = await bcrypt.hash(createUserDto.password, this.saltRound);
     const userHashed = <CreateUserPassDto>{

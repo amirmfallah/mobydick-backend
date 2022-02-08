@@ -27,3 +27,10 @@ export class CreateOrderDto {
 
   trans_id: string;
 }
+
+export interface Filter {
+  phone?: string;
+  status?: CartStatus;
+  orderId?: string;
+  ownerId?: string;
+}

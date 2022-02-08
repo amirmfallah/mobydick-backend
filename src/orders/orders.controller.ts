@@ -107,8 +107,8 @@ export class OrdersController {
   @Roles(Role.Super)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  findAll(@Query() pagination: Pagination) {
-    return this.ordersService.findAll(pagination);
+  findAll(@Query() pagination: Pagination, @Query('search') search: string) {
+    return this.ordersService.findAll(pagination, search);
   }
 
   @Roles(Role.Admin)
@@ -121,8 +121,12 @@ export class OrdersController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('branch/:id')
-  findAllByBranch(@Query() pagination: Pagination, @Param('id') id: string) {
-    return this.ordersService.findAllByBranch(id, pagination);
+  findAllByBranch(
+    @Query() pagination: Pagination,
+    @Param('id') id: string,
+    @Query('search') search: string,
+  ) {
+    return this.ordersService.findAllByBranch(id, pagination, search);
   }
 
   @UseGuards(JwtAuthGuard)

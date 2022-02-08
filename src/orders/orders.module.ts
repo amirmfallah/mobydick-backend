@@ -1,3 +1,5 @@
+import { UsersModule } from './../users/users.module';
+import { UsersService } from 'src/users/users.service';
 import { Module } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { OrdersController } from './orders.controller';
@@ -16,6 +18,7 @@ import { CartModule } from 'src/cart/cart.module';
     HttpModule,
     CartModule,
     GiftsModule,
+    UsersModule,
   ],
 })
 export class OrdersModule {}
