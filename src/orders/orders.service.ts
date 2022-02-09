@@ -69,6 +69,10 @@ export class OrdersService {
         }
         filter['ownerId'] = searchObj.ownerId;
       }
+
+      if (searchObj.branchId) {
+        filter['branchId'] = searchObj.branchId;
+      }
     }
 
     if (pagination.page && pagination.page >= 0) {
@@ -130,6 +134,10 @@ export class OrdersService {
           searchObj.ownerId = '4edd40c86762e0fb12000003';
         }
         filter['ownerId'] = searchObj.ownerId;
+      }
+
+      if (searchObj.branchId) {
+        filter['branchId'] = searchObj.branchId;
       }
     }
     filter['branchId'] = branchId;

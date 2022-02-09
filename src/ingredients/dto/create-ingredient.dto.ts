@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { Allow, IsNotEmpty } from 'class-validator';
 export class CreateIngredientDto {
   constructor() {
     this.available = false;
@@ -12,6 +12,6 @@ export class CreateIngredientDto {
   @IsNotEmpty()
   price: number;
 
-  @IsNotEmpty()
+  @Allow()
   available: boolean;
 }

@@ -10,6 +10,7 @@ import { Role } from 'src/shared/roles.enum';
 import { User } from './schemas/users.schema';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -83,5 +84,30 @@ export class UsersService {
       return user;
     }
     return null;
+  }
+
+  async patchUser(userId: string, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.password || updateUserDto.lastPassword) {
+      const user = await this.userModel.findById(userId);
+
+      if (!user) {
+        throw new Error('NOT_FOUND');
+      }
+
+      const isMatch = await bcrypt.compare(
+        updateUserDto.lastPassword,
+        user.password,
+      );
+      if (!isMatch) {
+        throw new Error('WRONG_PASS');
+      }
+
+      delete updateUserDto.lastPassword;
+      const hash = await bcrypt.hash(updateUserDto.password, this.saltRound);
+      updateUserDto.password = hash;
+    }
+    return await this.userModel.findByIdAndUpdate(userId, updateUserDto, {
+      new: true,
+    });
   }
 }

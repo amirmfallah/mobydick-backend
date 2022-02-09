@@ -33,4 +33,5 @@ export interface Filter {
   status?: CartStatus;
   orderId?: string;
   ownerId?: string;
+  branchId?: string;
 }
