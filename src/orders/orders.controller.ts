@@ -1,3 +1,4 @@
+import { ReportParamDto, ReportDto } from './../shared/dto/shared.dto';
 import { Cart } from 'src/cart/schemas/cart.schema';
 import { CartService } from './../cart/cart.service';
 import { CartStatus } from './../cart/interfaces/cart.enum';
@@ -28,7 +29,8 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { AbstractPayment } from 'src/shared/AbstractPayment';
 import { NextPayGateway } from 'src/shared/gateways/nextpay.gateway';
-
+import * as _ from 'lodash';
+import persianDate = require('persian-date');
 @Controller('api/v1/orders')
 export class OrdersController {
   gateway: AbstractPayment;
@@ -127,6 +129,38 @@ export class OrdersController {
     @Query('search') search: string,
   ) {
     return this.ordersService.findAllByBranch(id, pagination, search);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('branch/:id/report')
+  async reportByBranch(
+    @Param('id') id: string,
+    @Query() query: ReportParamDto,
+  ) {
+    if (!query.to) {
+      query.to = new Date();
+    }
+    if (!query.from) {
+      const date = new persianDate();
+      query.from = new persianDate([date.year(), date.month(), 1]);
+    }
+    const orders = await this.ordersService.reportByBranch(id, query);
+    const report: ReportDto = {
+      totalCount: orders.length,
+      totalOpen: orders.filter((order) => order.status === CartStatus.OPEN)
+        .length,
+      totalSold: _.sumBy(orders, (order) => {
+        if (
+          order.status !== CartStatus.CANCELED &&
+          order.status !== CartStatus.OPEN
+        ) {
+          return _.get(order.payment, 'amount') || 0;
+        } else {
+          return 0;
+        }
+      }),
+    };
+    return report;
   }
 
   @UseGuards(JwtAuthGuard)

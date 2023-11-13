@@ -29,7 +29,7 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
+  @Patch('info')
   async patchUser(@Request() req, @Body() body: UpdateUserDto) {
     const userId = req.user.userId;
     return this.usersService.patchUser(userId, body);

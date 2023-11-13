@@ -14,7 +14,7 @@ export class RedisService {
         url: this.configService.get('REDIS_URI'),
       });
       this.client.on('error', (err) => console.log('Redis Client Error', err));
-      await this.client.connect();
+      // await this.client.connect();
     })();
   }
 

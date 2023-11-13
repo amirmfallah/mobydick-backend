@@ -1,3 +1,4 @@
+import { ReportParamDto } from './../shared/dto/shared.dto';
 import { Gift } from 'src/gifts/schemas/gifts.schema';
 import { GiftsService } from './../gifts/gifts.service';
 import { CartService } from './../cart/cart.service';
@@ -210,5 +211,12 @@ export class OrdersService {
 
   remove(id: string) {
     return this.OrdersModel.findByIdAndDelete(id);
+  }
+
+  async reportByBranch(branchId: string, query: ReportParamDto) {
+    return this.OrdersModel.find({
+      branchId: branchId,
+      createdAt: { $gt: query.from, $lt: query.to },
+    });
   }
 }

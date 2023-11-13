@@ -4,7 +4,6 @@ export class objectIdDto {
   @IsMongoId()
   readonly id: string;
 }
-
 export class Pagination {
   @Allow()
   page: number;
@@ -12,7 +11,6 @@ export class Pagination {
   @Allow()
   limit: number;
 }
-
 export interface AddressDto {
   address: string;
   lat: number;
@@ -21,7 +19,6 @@ export interface AddressDto {
   description: string;
   open: boolean;
 }
-
 export interface ShippingAddress {
   address: string;
   lat: number;
@@ -29,7 +26,6 @@ export interface ShippingAddress {
   phone: string;
   description: string;
 }
-
 export interface SearchResponse {
   items: any;
   pages: number;
@@ -37,7 +33,6 @@ export interface SearchResponse {
   currentPage: number;
   count: number;
 }
-
 export interface UserDto {
   phone: string;
   firstName: string;
@@ -45,7 +40,12 @@ export interface UserDto {
   email: string;
   thumbnail: string;
 }
-
-// export interface BranchDto {
-
-// }
+export interface ReportParamDto {
+  from?: Date;
+  to?: Date;
+}
+export interface ReportDto {
+  totalCount: number;
+  totalOpen: number;
+  totalSold: number;
+}
